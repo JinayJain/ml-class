@@ -17,7 +17,8 @@ p = zeros(m, 1);
 
 
 
-
+hyp = sigmoid(X * theta);
+p = round(hyp); 
 
 
 
