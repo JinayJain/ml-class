@@ -72,20 +72,36 @@ HL = sigmoid(IL * Theta1');
 HL = [ones(rows(HL), 1) HL];
 OL = sigmoid(HL * Theta2');
 
-for i = 1:columns(Y)
+J = 0;
+
+for i = 1:columns(OL)
     J += (1 / m) * sum(-Y(:, i) .* log(OL(:, i)) - (1 - Y(:, i)) .* log(1 - OL(:, i)));
 end
 
-disp(size(Theta1));
-disp(size(Theta2));
 J += (lambda / (2 * m)) * (sum(sum(Theta2(:, 2:columns(Theta2)) .^ 2)) + sum(sum(Theta1(:, 2:columns(Theta1)) .^ 2)));
 
+for t = 1:m
+    a_1 = [1 X(t, :)];
+    z_2 = a_1 * Theta1';
+    a_2 = [1 sigmoid(z_2)];
+    z_3 = a_2 * Theta2';
+    htheta = sigmoid(z_3);
+    delta_3 = zeros(size(htheta, 2), 1);
+    for c = 1:num_labels
+       delta_3(c) = htheta(c) - Y(t, c);
+    end
+    delta_2 = Theta2' * delta_3 .* sigmoidGradient([1 z_2])';
+    delta_2 = delta_2(2:end, :);
 
+    Theta1_grad = Theta1_grad + delta_2 * a_1;
+    Theta2_grad = Theta2_grad + delta_3 * a_2;
+end
 
+Theta1_grad = Theta1_grad ./ m;
+Theta2_grad = Theta2_grad ./ m;
 
-
-
-
+Theta1_grad(:, 2:end) = Theta1_grad(:, 2:end) + (lambda / m) * Theta1(:, 2:end);
+Theta2_grad(:, 2:end) = Theta2_grad(:, 2:end) + (lambda / m) * Theta2(:, 2:end);
 
 
 
