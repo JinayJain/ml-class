@@ -1,9 +1,0 @@
-
-!! Submission failed: operator +: nonconformant arguments (op1 is 4x2, op2 is 4x3)
-
-
-Function: nnCostFunction
-FileName: /home/jinay/Documents/ml-class/exercises/ex4/nnCostFunction.m
-LineNumber: 103
-
-Please correct your code and resubmit.
